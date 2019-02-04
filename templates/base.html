@@ -1,0 +1,81 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'bootstrap@3.3.7/css/bootstrap.min.css' %}">
+    {% block head_extends%}{% endblock %} {# 头部引用的文件，如css,js #}
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+{#            这里的按钮是在屏幕缩小后出现的，形成响应式布局的效果#}
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href= {% url 'index' %}>我的网站</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+{#                这里激活的类型应该是一个变量，点中哪个哪个激活#}
+                <li class={% block nav_index_active %}{% endblock %}><a href={% url 'index' %}>首页 </a></li>
+                <li class={% block nav_blog_active %}{% endblock %}><a href="{% url 'blog_list' %}">博客</a></li>
+
+                {#          这是下拉菜单#}
+                {#        <li class="dropdown">#}
+                {#          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">下拉菜单，暂时用不到 <span class="caret"></span></a>#}
+                {#          <ul class="dropdown-menu">#}
+                {#            <li><a href="#">Action</a></li>#}
+                {#            <li><a href="#">Another action</a></li>#}
+                {#            <li><a href="#">Something else here</a></li>#}
+                {#            <li role="separator" class="divider"></li>#}
+                {#            <li><a href="#">Separated link</a></li>#}
+                {#            <li role="separator" class="divider"></li>#}
+                {#            <li><a href="#">One more separated link</a></li>#}
+                {#          </ul>#}
+                {#        </li>#}
+
+            </ul>
+            {#        这是搜索栏#}
+            {#      <form class="navbar-form navbar-left">#}
+            {#        <div class="form-group">#}
+            {#          <input type="text" class="form-control" placeholder="Search">#}
+            {#        </div>#}
+            {#        <button type="submit" class="btn btn-default">Submit</button>#}
+            {#      </form>#}
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">这里到时候放头像</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">用户名 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">个人中心</a></li>
+                        <li><a href= "/admin">后台管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">退出登录</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+{% block content %}{% endblock %}
+
+<script type="text/javascript" src="{% static 'jquery@1.12.4.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'bootstrap@3.3.7/js/bootstrap.min.js' %}"></script>
+
+</body>
+</html>

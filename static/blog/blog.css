@@ -1,0 +1,46 @@
+/*blog_list.html*/
+/*博客分类列表样式*/
+ul.blog-types{
+    list-style-type: circle;
+    padding-left: 1em;
+}
+/*博客列表内部样式，h3标题*/
+div.blog{
+    margin-top: 0.5em;
+}
+/*博客列表内部样式，各个博客间间距*/
+div.blog:not(:last-child){
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+    border-bottom:1px solid #eeeeee;
+}
+/*博客列表中博客信息样式，分类、时间*/
+div.blog p.blog-info{
+    margin-bottom: 0.5em;
+    font-size: medium;
+}
+/*博客概要样式*/
+div.blog-outline{
+    text-indent: 2em;
+}
+div.blog-paging{
+    text-align: center;
+}
+
+/*blog_detail.html*/
+/*博客详情信息描述样式*/
+ul.blog-info-description{
+    list-style-type: none;
+    padding-left: 0em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+/*博客详情信息描述内部li样式*/
+ul.blog-info-description li{
+    display: inline-block;
+    margin-right: 1em;
+}
+/*博客详情内容样式*/
+div.blog-content{
+    text-indent: 2em;
+}
