@@ -32,7 +32,11 @@ def get_blog_list(request):
 
 def get_blog_detail(request, blog_id):
     context = {}
-    context['blog'] = Blog.objects.get(id=blog_id)
+    current_blog = Blog.objects.get(id=blog_id)
+    context['previous_blog'] = Blog.objects.filter(created_time__gt=current_blog.created_time).last()
+    # 因为按照时间顺序，时间新的排在前面，日期比他大排在他前面，所以取比他大的最后一篇，下面取第一篇同理
+    context['next_blog'] = Blog.objects.filter(created_time__lt=current_blog.created_time).first()
+    context['blog'] = current_blog
     return render(request, 'blog_detail.html', context)
 
 

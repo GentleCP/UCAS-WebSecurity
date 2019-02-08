@@ -17,17 +17,32 @@
                 {#    根据博客类型id跳转到相应的博客类型页（包含该类型下的所有博客）#}
                 <ul class="blog-info-description">
                     <li> <span class="glyphicon glyphicon-paperclip"
-                         aria-hidden="true"></span><a
-                        href= {% url 'blog_with_type' blog.blog_type.id %}> {{ blog.blog_type }}</a></li>
+                               aria-hidden="true"></span><a
+                            href= {% url 'blog_with_type' blog.blog_type.id %}> {{ blog.blog_type }}</a></li>
                     <li> <span class="glyphicon glyphicon-user"
-                         aria-hidden="true"></span> {{ blog.author }}</li>
+                               aria-hidden="true"></span> {{ blog.author }}</li>
                     <li> <span class="glyphicon glyphicon-time"
-                                          aria-hidden="true"></span> {{ blog.created_time|date:"Y-m-d" }}</li>
+                               aria-hidden="true"></span> {{ blog.created_time|date:"Y-m-d" }}</li>
                 </ul>
                 <div class="blog-content">
-                     {{ blog.content }}
+                    {{ blog.content }}
                 </div>
+                <div class="blog-more">
+                    <ul class="pager">
+                        {% if previous_blog %}
+                            <li class="previous"><a href= {% url 'blog_detail' previous_blog.id %}><span
+                                    aria-hidden="true">上一篇</span></a></li>
+                        {% else %}
+                            <li class="previous disabled"><span aria-hidden="true">上面没有咯</span></li>
+                        {% endif %}
+                        {% if next_blog %}
+                            <li class="next"><a href= {% url 'blog_detail' next_blog.id %}><span aria-hidden="true">下一篇</span></a></li>
+                        {% else %}
+                            <li class="next disabled"><span aria-hidden="true">下面没有咯</span></li>
+                        {% endif %}
 
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
