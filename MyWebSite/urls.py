@@ -15,9 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.conf import settings
+from django.conf.urls.static import static
+
 from .import views
 urlpatterns = [
     path('',views.get_index, name="index"),
     path('admin/', admin.site.urls, name="admin"),
+    path('ckeditor',include('ckeditor_uploader.urls')),
+    path('mdeditor',include('mdeditor.urls')),
+    # my apps
     path('blog/',include('blog.urls'))
 ]
+
+# 添加上传文件所在路径到url
+urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

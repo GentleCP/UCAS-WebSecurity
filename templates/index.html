@@ -4,9 +4,16 @@
 {% block title %}我的网站{% endblock %}
 
 {% block nav_index_active %}active{% endblock %}
+{% load staticfiles %}
+{% block head_extends %}
+    <link rel="stylesheet" href="{% static 'index/index.css' %}">
+{% endblock %}
+
 {# 页面内容 body #}
 {% block content %}
-     <h3>欢迎访问GentleCP的网站</h3>
+    <div class="index-title">
+        <h3>欢迎访问GentleCP的网站</h3>
+    </div>
 {% endblock %}
 
 

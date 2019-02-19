@@ -1,4 +1,7 @@
+# django 的库
 from django.contrib import admin
+
+# 本地库
 from .models import Blog,BlogType
 # Register your models here.
 
@@ -8,5 +11,5 @@ class BlogTypeAdmin(admin.ModelAdmin):
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
-    list_display = ('title','blog_type')
+    list_display = ('id','title','blog_type','get_read_num')
     ordering = ['id',]

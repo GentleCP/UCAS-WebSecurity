@@ -1,0 +1,5 @@
+/*网站首页标题*/
+div.index-title h3{
+    display: inline-block;
+    text-align: center;
+}

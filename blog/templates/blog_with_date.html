@@ -1,0 +1,9 @@
+{% extends 'blog_list.html' %}
+{# 页面标题 head#}
+{% block title %}归档{% endblock %}
+{# 继承了blog_list.html,与其不同的只有博客列表的头部显示对应类型名称 #}
+{% block blog-head %}{{ blog_date }}{% endblock %}
+
+
+
+
