@@ -41,7 +41,7 @@ class ReadDetail(models.Model):
     '''
     阅读情况详细信息，包括按天记录阅读数
     '''
-    read_date = models.DateField(default = timezone.now())
+    read_date = models.DateField(default = timezone.now)
     read_num = models.IntegerField(default=0)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING)  # 将ContentType绑定作为外键生成contenttype对象

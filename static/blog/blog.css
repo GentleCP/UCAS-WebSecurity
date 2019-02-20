@@ -4,6 +4,15 @@ ul.blog-types{
     list-style-type: circle;
     padding-left: 1em;
 }
+/*在右侧栏目中的url样式*/
+ul.blog-types nobr.blog-url{
+    color: #6495ed;
+}
+/*在右侧栏目中的url后面跟的参数样式*/
+ul.blog-types nobr.blog-arg{
+    color: #808080;
+    float: right;
+}
 /*博客列表内部样式，h3标题*/
 div.blog{
     margin-top: 0.5em;
@@ -43,3 +52,4 @@ ul.blog-info-description li{
 /*博客详情内容样式*/
 div.blog-content{
 }
+

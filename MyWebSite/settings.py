@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # my apps
     'blog',
     'read_statistic',
+    'comment',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,4 @@ CKEDITOR_UPLOAD_PATH = 'upload/'  # 富文本编辑器上传的图片路径
 
 # settings in blog
 BLOGS_PER_PAGE = 5  # 每页放置的blog数量
+NUM_OF_HOT_BLOGS = 5 # 热门文章显示最大数量

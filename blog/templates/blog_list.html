@@ -28,13 +28,19 @@
                                     <span class="glyphicon glyphicon-paperclip"
                                           aria-hidden="true"></span> <a
                                         href= {% url 'blog_with_type' blog.blog_type.id %}>{{ blog.blog_type.type_name }}</a>
-                                    <span class="glyphicon glyphicon-time"
-                                          aria-hidden="true"></span> {{ blog.created_time|date:"Y-m-d" }}
-                                    阅读数:{{ blog.get_read_num }}
+                                    <span class="glyphicon glyphicon-user"
+                                          aria-hidden="true"></span> {{ blog.author }}
+
+                                </font>
                                 </p>
                                 <div class="blog-outline">
                                     {{ blog.content | truncatechars:150 }}
                                 </div>
+                                <nobr><span class="glyphicon glyphicon-time"
+                                          aria-hidden="true"></span> <font
+                                        color="gray">{{ blog.last_modified_time|date:"Y-m-d H:i:s" }}</nobr>
+
+                                <nobr><font color="gray"> | 阅读数:{{ blog.get_read_num }}</font></nobr>
                             </div>
                         {% empty %}
                             暂无博客，赶快去写一个吧~
@@ -103,25 +109,30 @@
                     </p>
                 </div>
             </div>
+            {#            博客分类栏目#}
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title"><span class="glyphicon glyphicon-paperclip"
-                                                      aria-hidden="true"></span> 博客类型</h3>
+                                                      aria-hidden="true"></span> 博客分类</h3>
                     </div>
                     <div class="panel-body">
                         <ul class="blog-types">
                             {% for blog_type in blog_types %}
                                 {#    根据博客类型id跳转到相应的博客类型页（包含该类型下的所有博客）#}
-                                <li style="line-height:25px"><a
-                                        href= {% url 'blog_with_type' blog_type.id %}>
-                                    {{ blog_type.type_name }} ({{ blog_type.blog_count }})</a></li>
+                                <li style="line-height:25px">
+                                    <nobr class ="blog-url"><a href= {% url 'blog_with_type' blog_type.id %}>
+                                        <font color="#6495ed"> {{ blog_type.type_name }} </font></a></nobr>
+                                    <nobr class = "blog-arg">{{ blog_type.blog_count }} 篇</nobr>
+                                </li>
+
                             {% empty %}
                                 <li><a>暂无类型，赶快去添加分类吧~</a></li>
                             {% endfor %}
                         </ul>
                     </div>
                 </div>
+                {#                归档栏目#}
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title"><span class="glyphicon glyphicon-align-left"
@@ -131,13 +142,35 @@
                         <ul class="blog-types">
                             {% for blog_date, blog_count in blog_dates.items %}
                                 <li>
-                                    <a href= {% url 'blog_with_date'  blog_date.year blog_date.month %}>
-                                        {{ blog_date | date:"Y年m月" }} ({{ blog_count }})</a>
+                                    <nobr class="blog-url"><a
+                                            href= {% url 'blog_with_date'  blog_date.year blog_date.month %}>
+                                        {{ blog_date | date:"Y年m月" }}</a></nobr>
+                                    <nobr class="blog-arg">{{ blog_count }} 篇</nobr>
+
                                 </li>
                             {% endfor %}
                         </ul>
                     </div>
                 </div>
+                {#                热门文章栏目#}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span class="glyphicon glyphicon-fire"
+                                                      aria-hidden="true"></span> 热门博客</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="blog-types">
+                            {% for hot_blog in hot_blogs %}
+                                <li>
+                                    <nobr class="blog-url"><a href={% url 'blog_detail' hot_blog.id %}>
+                                        {{ hot_blog.title }} </a></nobr>
+                                    <nobr class="blog-arg">阅读数：{{ hot_blog.get_read_num }}</nobr>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

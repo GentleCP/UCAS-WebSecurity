@@ -7,8 +7,9 @@ from django.shortcuts import render_to_response, get_object_or_404
 import markdown
 
 # 本地库
-from .models import Blog, BlogType
 from read_statistic.utils import read_once # 阅读一次计数方法
+from .models import Blog, BlogType
+from .utils import blogs_pagination,get_blog_types,get_blog_dates,get_hot_blogs
 
 # Create your views here.
 def get_blog_common(request, all_blogs):
@@ -18,31 +19,19 @@ def get_blog_common(request, all_blogs):
     :return:
     '''
     # ----------------分页操作---------------
-    blog_paginator = Paginator(all_blogs, settings.BLOGS_PER_PAGE)  # 博客分页器，5条一页
-    page_num = request.GET.get('page', 1)  # 获取url请求中页面的参数
-    blogs_in_page = blog_paginator.get_page(page_num)  # 根据页面获取到该页的blog对象
-    current_page_num = blogs_in_page.number  # 当前页面
-    page_range = [i for i in [current_page_num - 2, current_page_num - 1, current_page_num,
-                              current_page_num + 1, current_page_num + 2] if
-                  i > 0 and i <= blog_paginator.num_pages]
+    blogs_in_page, page_range = blogs_pagination(request,all_blogs)
     # ----------------统计分类博客数量---------------
-    blog_types = BlogType.objects.all()
-    for blog_type in blog_types:
-        blog_count = Blog.objects.filter(blog_type=blog_type).count()  # 根据博客类型统计该类型下的博客数量
-        blog_type.blog_count = blog_count
+    blog_types = get_blog_types()
     # ----------------统计按月博客数量---------------
-    blog_dates = Blog.objects.dates('created_time', 'month', order='DESC')  # 按月份返回博客,是个dates对象
-    blog_dates_dic = {}
-    for blog_date in blog_dates:
-        blog_count = Blog.objects.filter(created_time__year=blog_date.year,
-                                         created_time__month=blog_date.month).count()#根据取到的月份博客的年月属性挑出博客
-        blog_dates_dic[blog_date] = blog_count
-
+    blog_dates_dic = get_blog_dates()
+    # ----------------获取热门博客---------------
+    hot_blogs = get_hot_blogs()
     context = {}
     context['blogs_in_page'] = blogs_in_page
     context['page_range'] = page_range  # 选取当前页面和邻近的4页作为分页显示
     context['blog_types'] = blog_types  # 统计了博客数量的博客类型
     context['blog_dates'] = blog_dates_dic # 统计了博客数量的按月博客
+    context['hot_blogs'] = hot_blogs    # 热门博客
     return context
 
 def get_blog_list(request):

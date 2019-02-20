@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
 # 本地库
+from blog.models import Blog
 from .models import ReadNum
 from .models import ReadDetail
 
@@ -26,3 +27,4 @@ def read_once(request,obj):
         readdetail,created = ReadDetail.objects.get_or_create(content_type=ct,object_id=obj.id, read_date =today)
         readdetail.add_read_num()
     return read_key
+
