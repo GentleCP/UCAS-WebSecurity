@@ -24,8 +24,11 @@ urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),
     path('ckeditor',include('ckeditor_uploader.urls')),
     path('mdeditor',include('mdeditor.urls')),
+    path('login/',views.login,name="login"),
+    path('logout/',views.logout, name="logout"),
+    path('login_check/',views.login_check, name="login_check"),
     # my apps
-    path('blog/',include('blog.urls'))
+    path('blog/',include('blog.urls')),
 ]
 
 # 添加上传文件所在路径到url

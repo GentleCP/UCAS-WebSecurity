@@ -5,7 +5,7 @@
 
 {% load staticfiles %}
 {% block head_extends %}
-    <link rel="stylesheet" href="{% static 'blog/blog.css' %}">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
 {% endblock %}
 
 {# 页面内容 body #}
@@ -30,8 +30,6 @@
                                         href= {% url 'blog_with_type' blog.blog_type.id %}>{{ blog.blog_type.type_name }}</a>
                                     <span class="glyphicon glyphicon-user"
                                           aria-hidden="true"></span> {{ blog.author }}
-
-                                </font>
                                 </p>
                                 <div class="blog-outline">
                                     {{ blog.content | truncatechars:150 }}
@@ -103,8 +101,8 @@
                     </ul>
                     <p>
                         共 {{ blogs_in_page.paginator.count }} 篇，
-                        当前第{{ blogs_in_page.number }}页，
-                        共 {{ blogs_in_page.paginator.num_pages }}页
+                        当前第 {{ blogs_in_page.number }} 页，
+                        共 {{ blogs_in_page.paginator.num_pages }} 页
 
                     </p>
                 </div>

@@ -1,7 +1,7 @@
 # django 的库
 from django.conf import settings
 from django.core.paginator import Paginator
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import get_object_or_404,render
 
 # 第三方库
 import markdown
@@ -42,7 +42,7 @@ def get_blog_list(request):
     '''
     all_blogs = Blog.objects.all()  # 获取所有的blog
     context = get_blog_common(request, all_blogs)  # 调用公共代码函数，返回context
-    return render_to_response('blog_list.html', context)
+    return render(request,'blog_list.html', context)
 
 def get_blog_with_type(request, blog_type_id):
     '''
@@ -57,7 +57,7 @@ def get_blog_with_type(request, blog_type_id):
     context = get_blog_common(request, all_blogs)
     # -------------上面是与get_blog_list的公共部分--------------
     context['blog_type'] = type
-    return render_to_response('blog_with_type.html', context)
+    return render(request,'blog_with_type.html', context)
 
 def get_blog_with_date(request, year, month):
     '''
@@ -72,7 +72,7 @@ def get_blog_with_date(request, year, month):
     context = get_blog_common(request, all_blogs)
     # -------------上面是与get_blog_list的公共部分--------------
     context['blog_date'] = "%s年%s月" % (year, month)
-    return render_to_response('blog_with_date.html', context)
+    return render(request,'blog_with_date.html', context)
 
 def get_blog_detail(request, blog_id):
     '''
@@ -95,6 +95,6 @@ def get_blog_detail(request, blog_id):
                                                     'markdown.extensions.codehilite', # 语法高亮拓展
                                                     'markdown.extensions.toc', # 内容表拓展,允许生成目录
                                                 ])
-    response = render_to_response('blog_detail.html', context)
+    response = render(request,'blog_detail.html', context)
     response.set_cookie(read_key ,'true') # 设置cookie
     return response

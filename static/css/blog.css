@@ -27,6 +27,7 @@ div.blog:not(:last-child){
 div.blog p.blog-info{
     margin-bottom: 0.5em;
     font-size: medium;
+    color: #000000;
 }
 /*博客概要样式*/
 div.blog-outline{

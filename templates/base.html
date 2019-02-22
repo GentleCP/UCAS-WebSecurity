@@ -7,15 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'bootstrap@3.3.7/css/bootstrap.min.css' %}">
-    {% block head_extends%}{% endblock %} {# 头部引用的文件，如css,js #}
+    {% block head_extends %}{% endblock %} {# 头部引用的文件，如css,js #}
 </head>
 <body>
-
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-{#            这里的按钮是在屏幕缩小后出现的，形成响应式布局的效果#}
+            {#            这里的按钮是在屏幕缩小后出现的，形成响应式布局的效果#}
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
@@ -29,7 +28,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-{#                这里激活的类型应该是一个变量，点中哪个哪个激活#}
+                {#                这里激活的类型应该是一个变量，点中哪个哪个激活#}
                 <li class={% block nav_index_active %}{% endblock %}><a href={% url 'index' %}>首页 </a></li>
                 <li class={% block nav_blog_active %}{% endblock %}><a href="{% url 'blog_list' %}">博客</a></li>
 
@@ -58,24 +57,35 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">这里到时候放头像</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">{% block user_name %}登录{% endblock %} <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true"
+                       aria-expanded="false">
+                        {% if user.is_authenticated %}
+                            <nobr> {{ user }}</nobr>
+                        {% else %}
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        {% endif %}
+                        <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">个人中心</a></li>
-                        <li><a href= "/admin">后台管理</a></li>
+                        <li><a href="/admin">后台管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">退出登录</a></li>
+                        {% if user.is_authenticated %}
+                           <li><a href="{% url 'logout' %}">退出登录</a></li>
+                        {% else %}
+                            <li><a href="{% url 'login' %}">登录</a></li>
+                        {% endif %}
+
                     </ul>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-
+<script type="text/javascript" src="{% static 'js/jquery@1.12.4.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'bootstrap@3.3.7/js/bootstrap.min.js' %}"></script>
 {% block content %}{% endblock %}
 
-<script type="text/javascript" src="{% static 'jquery@1.12.4.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'bootstrap@3.3.7/js/bootstrap.min.js' %}"></script>
 
 </body>
 </html>

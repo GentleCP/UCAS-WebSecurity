@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{# 页面标题 head#}
+{% block title %}我的网站|登录{% endblock %}
+{% block head_extends %}
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href={% static 'css/signin.css' %} >
+{% endblock %}
+{# 页面内容 body #}
+{% block content %}
+    <div class="container">
+      <form class="form-signin" action="{% url 'login_check' %}" method="post">
+        {% csrf_token %}
+        <h2 class="form-signin-heading">GentleCP WebSite</h2>
+{#        <label for="inputEmail" class="sr-only">Email address</label>#}
+        <input id="inputUsername" name = "username", class="form-control" placeholder="账号" required autofocus>
+        <label for="inputPassword"  class="sr-only">Password</label>
+        <input type="password" id="inputPassword" name = "password" class="form-control" placeholder="密码" required>
+        <div class="checkbox">
+{#          <label>#}
+{#            <input type="checkbox" value="remember-me"> 记住密码#}
+{#          </label>#}
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+        <p class="error_message">{{ error_message }}</p>
+      </form>
+
+    </div> <!-- /container -->
+{% endblock %}

@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {# 页面标题 head#}
-{% block title %}我的网站{% endblock %}
+{% block title %}我的网站|首页{% endblock %}
 
 {% block nav_index_active %}active{% endblock %}
 {% load staticfiles %}
 {% block head_extends %}
-    <link rel="stylesheet" href="{% static 'index/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
 {% endblock %}
 
 {# 页面内容 body #}
