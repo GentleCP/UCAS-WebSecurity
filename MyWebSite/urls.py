@@ -29,6 +29,8 @@ urlpatterns = [
     path('login_check/',views.login_check, name="login_check"),
     # my apps
     path('blog/',include('blog.urls')),
+    path('comment/',include('comment.urls')),
+
 ]
 
 # 添加上传文件所在路径到url

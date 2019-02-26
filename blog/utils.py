@@ -7,7 +7,6 @@ from django.contrib.contenttypes.models import ContentType
 from read_statistic.models import ReadNum
 from .models import Blog, BlogType
 
-
 def blogs_pagination(request, all_blogs):
     '''
     博客分页的操作
@@ -24,7 +23,6 @@ def blogs_pagination(request, all_blogs):
                   i > 0 and i <= blog_paginator.num_pages]
     return blogs_in_page, page_range
 
-
 def get_blog_types():
     '''
     获取统计了数量的博客类型
@@ -35,7 +33,6 @@ def get_blog_types():
         blog_count = Blog.objects.filter(blog_type=blog_type).count()  # 根据博客类型统计该类型下的博客数量
         blog_type.blog_count = blog_count
     return blog_types
-
 
 def get_blog_dates():
     '''
@@ -49,7 +46,6 @@ def get_blog_dates():
                                          created_time__month=blog_date.month).count()  # 根据取到的月份博客的年月属性挑出博客
         blog_dates_dic[blog_date] = blog_count
     return blog_dates_dic
-
 
 def get_hot_blogs():
     '''

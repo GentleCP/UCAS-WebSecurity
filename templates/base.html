@@ -61,7 +61,7 @@
                        aria-haspopup="true"
                        aria-expanded="false">
                         {% if user.is_authenticated %}
-                            <nobr> {{ user }}</nobr>
+                            <nobr> {{ user.username }}</nobr>
                         {% else %}
                             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                         {% endif %}

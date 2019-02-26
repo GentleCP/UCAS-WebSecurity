@@ -54,3 +54,10 @@ ul.blog-info-description li{
 div.blog-content{
 }
 
+div.comment-area{
+    margin-top: 2em;
+}
+h3.comment-area-title{
+    border-bottom: 1px #ccc;
+    padding-bottom: 0.4em;
+}

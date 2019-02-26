@@ -28,7 +28,7 @@ class Blog(models.Model, ReadNumExtendMethod):
     last_modified_time = models.DateTimeField(auto_now=True, verbose_name="上次修改时间")
 
     def __str__(self):
-        return "[Title:%s]" % self.title
+        return "[Blog:%s]" % self.title
 
     class Meta:
         ordering = ['-created_time', ]  # 这里让前端网页在对从request获取到的数据排序按照创建时间由新到旧

@@ -22,7 +22,7 @@
                     <li> <span class="glyphicon glyphicon-user"
                                aria-hidden="true"></span> {{ blog.author }}</li>
                     <li> <span class="glyphicon glyphicon-time"
-                               aria-hidden="true"></span> {{ blog.created_time|date:"Y-m-d" }}</li>
+                               aria-hidden="true"></span> {{ blog.created_time|date:"Y-m-d h:i:s" }}</li>
                     <li> 阅读数：{{ blog.get_read_num }}</li>
                 </ul>
                 <div class="blog-content">
@@ -47,6 +47,40 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1">
+                {#                     评论输入提交框#}
+                <div class="comment-area">
+                    <h3 class="comment-area-title"> 写评论 </h3>
+                    {% if user.is_authenticated %}
+                        <form class="form-signin" action="{% url 'submit_comment' %}" method="post">
+                        {% csrf_token %}
+                            <textarea id="comment_id"name="content" style="width:10em;height: 5em;"></textarea>
+                            <input type="hidden" name="object_id" value="{{ blog.id }}">
+                            <input type="hidden" name="model" value="blog">
+                            <input type="submit" value="提交">
+                        </form>
+                        <p>{{ error_message }}</p>
+                    {% else %}
+                        您尚未登录，需登录后才能进行评论！
+                        <a href="{% url 'login' %}">点此登录</a>
+                    {% endif %}
+                </div>
+                {#                     评论列表#}
+                <div class="comment-area">
+                    <h3 class="comment-area-title">评论列表</h3>
+                        {% for comment in comments %}
+                            <div>
+                                {{ comment.user }}
+                                {{ comment.created_time |date:"Y-m-d h:i:s"}}
+                                {{ comment.content }}
+                            </div>
+                        {% empty %}
+                        {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
+
 
 {% endblock %}

@@ -13,6 +13,6 @@ class Comment(models.Model):
     object_id = models.PositiveIntegerField()  # 对象的id，确定了对象后根据id唯一定位对象
     content_object = GenericForeignKey('content_type', 'object_id')  # 将上面两个合并成一个content对象
 
-    comment_content = models.TextField(verbose_name='评论内容')
-    comment_user = models.ForeignKey(User,on_delete=models.DO_NOTHING, verbose_name='评论用户') # 评论用户
-    comment_time = models.DateTimeField(auto_now_add=True,verbose_name='评论时间')
+    content = models.TextField(verbose_name='评论内容')
+    user = models.ForeignKey(User,on_delete=models.DO_NOTHING, verbose_name='评论用户') # 评论用户
+    created_time = models.DateTimeField(auto_now_add=True,verbose_name='评论时间')
