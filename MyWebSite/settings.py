@@ -134,6 +134,26 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # ckeditor settings
 CKEDITOR_UPLOAD_PATH = 'upload/'  # 富文本编辑器上传的图片路径
 
+CKEDITOR_CONFIGS = {
+    'default':{
+    },
+    'comment_ckeditor':{
+        'toolbar':'custom',
+        'toolbar_custom':[
+            ['Bold','Italic','Underline','Strike','Subscript','Superscript'],
+            ['TextColor','BGColor','RemoveFormat'],
+            ['NumberedList','BulletedList'],
+            ['Link','Unlink'],
+            ['Smiley','SpecialChar','Blockquote'],
+        ],
+        'width':'auto',
+        'height':'180',
+        'tabSpaces':4,
+        'removePlugins':'elementsPath',
+        'resize_enabled':False,
+    }
+}
+
 # settings in blog
 BLOGS_PER_PAGE = 5  # 每页放置的blog数量
 NUM_OF_HOT_BLOGS = 5 # 热门文章显示最大数量

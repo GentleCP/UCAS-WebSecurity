@@ -14,24 +14,29 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .import views
+from . import views
+
 urlpatterns = [
-    path('',views.get_index, name="index"),
+    # 项目根目录url
+    path('', views.get_index, name="index"),
     path('admin/', admin.site.urls, name="admin"),
-    path('ckeditor',include('ckeditor_uploader.urls')),
-    path('mdeditor',include('mdeditor.urls')),
-    path('login/',views.login,name="login"),
-    path('logout/',views.logout, name="logout"),
-    path('login_check/',views.login_check, name="login_check"),
+    path('login/', views.login, name="login"),
+    path('logout/', views.logout, name="logout"),
+    path('register/',views.register, name="register"),
+
     # my apps
-    path('blog/',include('blog.urls')),
-    path('comment/',include('comment.urls')),
+    path('blog/', include('blog.urls')),
+    path('comment/', include('comment.urls')),
+
+    # 第三方apps
+    path('ckeditor', include('ckeditor_uploader.urls')),
+    path('mdeditor', include('mdeditor.urls')),
 
 ]
 
 # 添加上传文件所在路径到url
-urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

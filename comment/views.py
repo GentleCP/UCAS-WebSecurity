@@ -3,6 +3,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 
 from .models import Comment
+from .forms import CommentForm
+
 # Create your views here.
 
 def submit_comment(request):
@@ -12,18 +14,13 @@ def submit_comment(request):
     :return:
     '''
     referer = request.META.get('HTTP_REFERER', reverse('index'))
-
     user = request.user
-    content = request.POST.get('content','')
-
-    #通过model名称一步步获取到model object，即Comment model中的content_type字段
-    model_str = request.POST.get('model', '')
-    model = ContentType.objects.get(model = model_str).model_class()
-    obj_id = request.POST.get('object_id','')
-    model_obj = model.objects.get(id = obj_id)
-
-    # 每次评论都是一个新评论，需创建一个Comment对象,如果评论内容不为空才创建
-    if content != '':
-        comment = Comment(content=content,user=user,content_object = model_obj)
+    comment_form = CommentForm(request.POST)  #request.POST 是一个字典
+    if comment_form.is_valid() and user.is_authenticated:
+        # 提交了一个有效评论
+        comment = Comment(content = comment_form.cleaned_data['content'],
+                          content_object = comment_form.cleaned_data['content_object'],
+                          user=user)
         comment.save()
-    return redirect(referer) # 提交一个评论后重定向到当前页面 == 刷新
+        return redirect(referer)
+

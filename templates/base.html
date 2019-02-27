@@ -71,9 +71,10 @@
                         <li><a href="/admin">后台管理</a></li>
                         <li role="separator" class="divider"></li>
                         {% if user.is_authenticated %}
-                           <li><a href="{% url 'logout' %}">退出登录</a></li>
+                            <li><a href="{% url 'logout' %}">退出登录</a></li>
                         {% else %}
-                            <li><a href="{% url 'login' %}">登录</a></li>
+                            <li><a href="{% url 'login' %}?referer={{ request.path }}">登录</a></li>
+                            <li><a href="{% url 'register' %}?referer={{ request.path }}">注册</a></li>
                         {% endif %}
 
                     </ul>
