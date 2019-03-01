@@ -16,6 +16,5 @@ class Comment(models.Model):
     content = models.TextField(verbose_name='评论内容')
     user = models.ForeignKey(User,on_delete=models.DO_NOTHING, verbose_name='评论用户') # 评论用户
     created_time = models.DateTimeField(auto_now_add=True,verbose_name='评论时间')
-
     class Meta:
         ordering = ['-created_time', ]  # 这里让前端网页在对从request获取到的数据排序按照创建时间由新到旧
