@@ -32,7 +32,7 @@
                                           aria-hidden="true"></span> {{ blog.author }}
                                 </p>
                                 <div class="blog-outline">
-                                    {{ blog.content | truncatechars:150 }}
+                                    {{ blog.content | truncatechars:150 |safe}}
                                 </div>
                                 <nobr><span class="glyphicon glyphicon-time"
                                           aria-hidden="true"></span> <font

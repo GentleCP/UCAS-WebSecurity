@@ -55,30 +55,34 @@
                 <div class="comment-area">
                     <h3 class="comment-area-title"> 写评论 </h3>
                     {% if user.is_authenticated %}
-                        <form class="form-signin" action="{% url 'submit_comment' %}" method="post"
+                        <form id="id_comment_form" class="form-signin"
                               style="overflow: hidden">
                             {% csrf_token %}
                             {#                            django form 表单#}
                             <label for="comment_id">{{ user.username }}</label>
-                            {{ comment_form }}
-                            <input type="submit" value="提交" class="btn btn-primary" style="float: right">
+                            {% for field in comment_form %}
+                                {{ field }}
+                            {% endfor %}
+                            <span id="id_comment_error" class="text-danger pull-left"></span>
+                            <input type="submit" value="提交" class="btn btn-primary pull-right">
                         </form>
                         <p>{{ error_message }}</p>
                     {% else %}
                         您尚未登录，需登录后才能进行评论！
-                        <a href="{% url 'login' %}?referer={{ request.get_full_path }}">点此登录</a>
+                        <a href="{% url 'login' %}?referer={{ request.path }}">点此登录</a>
                         <span> 或者 </span>
-                        <a href="{% url 'register' %}?referer={{ request.get_full_path }}">点此注册</a>
+                        <a href="{% url 'register' %}?referer={{ request.path }}">点此注册</a>
                     {% endif %}
                 </div>
                 {#                     评论列表#}
-                <div class="comment-area">
-                    <h3 class="comment-area-title">评论列表</h3>
+                <h3 class="comment-area-title">评论列表</h3>
+                <div id="id_comment_list" class="comment-area">
+
                     {% for comment in comments %}
                         <div>
                             {{ comment.user }}
                             {{ comment.created_time |date:"Y-m-d h:i:s" }}
-                            {{ comment.content }}
+                            {{ comment.content |safe }}
                         </div>
                     {% empty %}
                     {% endfor %}
@@ -87,5 +91,44 @@
         </div>
     </div>
 
+    {% block script_extents %}
+        <script type="text/javascript">
+            $("#id_comment_form").off().submit(function () {
+                // 判断内容是否为空
+                $("#id_comment_error").text("");
+                if (CKEDITOR.instances['id_content'].document.getBody().getText().trim() == '') {
+                    $("#id_comment_error").text("你还没有输入评论哦");
+                    return false;
+                }
+                // 更新数据到textarea
+                CKEDITOR.instances['id_content'].updateElement();
 
+                // 异步提交
+                $.ajax({
+                    url: "{% url 'submit_comment' %}",
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    cache: false,
+                    success: function (data) {
+                        {#console.log(data);#}
+                        if (data.status == "SUCCESS") { //也可以用data['status']
+                            // 成功获取到数据，插入到列表中
+                            var comment_content = data.username + ' ' + data.created_time + ':' + data.content;
+                            $("#id_comment_list").prepend(comment_content);
+                            // 点了提交后，清空编辑框
+                            CKEDITOR.instances['id_content'].set_Data('');
+                        } else {
+                            //获取数据失败，比如内容为空,显示错误信息
+                            $("#id_comment_error").text(data['error_message']);
+                        }
+
+                    },
+                    error: function (xhr) {
+                        {#console.log(xhr);#}
+                    }
+                });
+                return false;
+            });
+        </script>
+    {% endblock %}
 {% endblock %}
