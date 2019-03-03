@@ -23,9 +23,20 @@ def submit_comment(request):
         comment = Comment(content = comment_form.cleaned_data['content'],
                           content_object = comment_form.cleaned_data['content_object'],
                           user=user)
+        parent = comment_form.cleaned_data['parent']
+        if parent is not None:
+            # parent这一属性不为None，说明是回复
+            comment.parent = parent
+            comment.root = parent.root if parent.root is not None else parent
+            comment.to_user = parent.user
+            data['to_user'] = parent.user.username # 在前台显示对xxx的回复
+        else:
+            data['to_user'] = ''  # 这是条一级评论
         comment.save()
         # return redirect(referer)
         data['status'] = 'SUCCESS'
+        data['id'] = comment.id  # 记录评论的id
+        data['root_id'] = comment.root.id if comment.root.id is not None else ''
         data['username'] = comment.user.username
         data['created_time'] = comment.created_time.strftime("%Y-%m-%d %H:%M:%S")
         data['content'] = comment.content
