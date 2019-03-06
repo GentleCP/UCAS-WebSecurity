@@ -4,6 +4,7 @@
 {% block nav_blog_active %}active{% endblock %}
 
 {% load staticfiles %}
+{% load comment_tags %}
 {% block head_extends %}
     <link rel="stylesheet" href="{% static 'css/blog.css' %}">
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
@@ -26,7 +27,7 @@
                     <li> <span class="glyphicon glyphicon-time"
                                aria-hidden="true"></span> {{ blog.created_time|date:"Y-m-d h:i:s" }}</li>
                     <li> 阅读数：{{ blog.get_read_num }}</li>
-                    <li> 评论数：{{ comment_num }}</li>
+                    <li> 评论数：{% get_comment_num blog %}</li>
                 </ul>
                 <div class="blog-content">
                     {{ blog.content | safe }}
@@ -67,6 +68,7 @@
                             {% csrf_token %}
                             {#                            django form 表单#}
 
+                            {% get_comment_form blog as comment_form %}
                             {% for field in comment_form %}
                                 {{ field }}
                             {% endfor %}
@@ -84,12 +86,14 @@
                 {#                     评论列表#}
                 <h3 class="comment-area-title">评论列表</h3>
                 <div id="id_comment_list" class="comment-area">
-
+                    {% get_comments blog as comments %}
                     {% for comment in comments %}
                         <div id="id_root_{{ comment.id }}" class="comment">
-                            {{ comment.user.username }}
-                            {{ comment.created_time |date:"Y-m-d h:i:s" }}
-                            <div id="id_comment_{{ comment.id }}">{{ comment.content |safe }}</div>
+                            <span>{{ comment.user.username }}</span>
+                            <span>{{ comment.created_time |date:"Y-m-d h:i:s" }}</span>
+                            <div id="id_comment_{{ comment.id }}">
+                                {{ comment.content |safe }}
+                            </div>
                             {#                            点击进行回复#}
                             <a href="javascript:reply({{ comment.id }})">回复</a>
                         </div>
@@ -97,11 +101,13 @@
                         {#                            显示该评论下的所有回复#}
                         {% for reply in comment.root_comment.all %}
                             <div class="reply">
-                                {{ reply.user.username }}
-                                {{ reply.created_time| date:"Y-m-d h:i:s" }}
-                                回复
-                                {{ reply.to_user.username }}
-                                <div id="id_comment_{{ reply.id }}">{{ reply.content |safe }}</div>
+                                <span>{{ reply.user.username }}</span>
+                                <span>{{ reply.created_time| date:"Y-m-d h:i:s" }}</span>
+                                <span>回复</span>
+                                <span>{{ reply.to_user.username }}</span>
+                                <div id="id_comment_{{ reply.id }}">
+                                    {{ reply.content |safe }}
+                                </div>
                                 {#                            点击进行回复#}
                                 <a href="javascript:reply({{ reply.id }})">回复</a>
                             </div>
@@ -140,32 +146,28 @@
                         {#console.log(data);#}
                         if (data.status == "SUCCESS") { //也可以用data['status']
                             // 成功获取到数据，插入到列表中
-
                             if ($('#id_reply').val() == '0') {
                                 // 插入评论
-                                {#----------------这里之后需要修改，样式太丑----------------#}
-                                var comment_html = data.username + ' ' + data.created_time + ':' + data.content;
+                                var comment_html = '<div id="id_root_' + data['id'] + '" class="comment"><span>' + data['username'] + '</span><span> (' + timeFormat(data['created_time']) + ')：</span><div id="id_comment_' + data['id'] + '">' + data['content'] + '</div><a href="javascript:reply(' + data['id'] + ');">回复</a></div>';
                                 $("#id_comment_list").prepend(comment_html);
                             } else {
-                                //插入回复到评论下
-                                {#----------------这里之后需要修改，样式太丑----------------#}
-                                var reply_html = '<br>' + data.username + ' ' + data.created_time + ' ' +
-                                    '回复' + ' ' + data.to_user.username + '<br>' + data.content;
-                                $("#id_root_" + data.root_id).append(reply_html);
+                                // 插入回复
+                                var reply_html = '<div class="reply"><span>' + data['username'] + '</span><span> (' + timeFormat(data['created_time']) + ')</span><span> 回复 </span><span>' + data['to_user'] + '：</span><div id="id_comment_' + data['id'] + '">' + data['content'] + '</div><a href="javascript:reply(' + data['id'] + ');">回复</a></div>';
+                                $("#id_root_" + data['root_id']).append(reply_html);
                             }
-                            // 点了提交后，清空编辑框
-                            CKEDITOR.instances['id_content'].set_Data('');
-                            $('#id_replied_container').hide(); //回复插入成功后隐藏
-                            $('#id_reply').val('0');  //重新一次评论值重置为0
+
+                            // 清空编辑框的内容
+                            CKEDITOR.instances['id_content'].setData('');
+                            $('#id_replied_container').hide();
+                            $('#id_reply').val('0');
                             $('#id_no_comment').remove();
                         } else {
-
                             //获取数据失败，比如内容为空,显示错误信息
                             $("#id_comment_error").text(data['error_message']);
                         }
                     },
                     error: function (xhr) {
-                        {#console.log(xhr);#}
+                        console.log(xhr);
                     }
                 });
                 return false;
@@ -181,8 +183,20 @@
                 $('html').animate({scrollTop: $('#id_comment_form').offset().top - 60}, 200, function () {
                     CKEDITOR.instances['id_content'].focus(); //让输入栏获得焦点
                 });
-
-
+            }
+            function numFormat(num) {
+                // 控制一位数补0
+                return ('00'+num).substr(-2);
+            }
+            function timeFormat(timestamp) {
+                var datetime = new Date(timestamp * 1000);
+                var year = datetime.getFullYear();
+                var month = numFormat(datetime.getMonth()+1);  //从0月开始
+                var day = numFormat(datetime.getDate());
+                var hour = numFormat(datetime.getHours());
+                var min = numFormat(datetime.getMinutes());
+                var sec = numFormat(datetime.getSeconds());
+                return year + '-'+ month + '-'+ day + ' '+ hour+':'+min+':'+sec;
             }
         </script>
     {% endblock %}

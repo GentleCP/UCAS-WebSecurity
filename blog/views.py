@@ -1,14 +1,11 @@
 # django 的库
 from django.shortcuts import get_object_or_404, render
-from django.contrib.contenttypes.models import ContentType
 
 # 第三方库
 # import markdown
 
 # 本地库
 from read_statistic.utils import read_once  # 阅读一次计数方法
-from comment.models import Comment
-from comment.forms import CommentForm
 from .models import Blog, BlogType
 from .utils import blogs_pagination, get_blog_types, get_blog_dates, get_hot_blogs
 
@@ -91,14 +88,7 @@ def get_blog_detail(request, blog_id):
     current_blog = Blog.objects.get(id=blog_id)
     # 阅读一次该博客进行阅读数加1
     read_key = read_once(request, current_blog)
-    # 获取所有的评论
-    blog_ct = ContentType.objects.get_for_model(current_blog)
     # 根据blog的content_type 和blog id找出评论中所有blog的评论
-    comments = Comment.objects.filter(content_type=blog_ct, object_id=current_blog.id,
-                                      parent=None)  # parent=None说明是原始评论
-    context['comments'] = comments.order_by('-created_time')  # 将comments传送至前端,按照时间倒叙排序
-    context['comment_num'] = comments = Comment.objects.filter(content_type=blog_ct, object_id=current_blog.id).count() # 评论数
-    context['comment_form'] = CommentForm(initial={'content_type': blog_ct.model, 'object_id': blog_id,'reply_id':0})
     context['previous_blog'] = Blog.objects.filter(created_time__gt=current_blog.created_time).last()
     # 因为按照时间顺序，时间新的排在前面，日期比他大排在他前面，所以取比他大的最后一篇，下面取第一篇同理
     context['next_blog'] = Blog.objects.filter(created_time__lt=current_blog.created_time).first()

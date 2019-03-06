@@ -4,6 +4,7 @@
 {% block nav_blog_active %}active{% endblock %} {# 激活的页面加深颜色 #}
 
 {% load staticfiles %}
+{% load comment_tags %}
 {% block head_extends %}
     <link rel="stylesheet" href="{% static 'css/blog.css' %}">
 {% endblock %}
@@ -36,9 +37,10 @@
                                 </div>
                                 <nobr><span class="glyphicon glyphicon-time"
                                           aria-hidden="true"></span> <font
-                                        color="gray">{{ blog.last_modified_time|date:"Y-m-d H:i:s" }}</nobr>
+                                        color="gray">{{ blog.last_modified_time|date:"Y-m-d H:i:s" }}</font></nobr>
 
                                 <nobr><font color="gray"> | 阅读数:{{ blog.get_read_num }}</font></nobr>
+                            <nobr><font color="gray"> | 评论数:{% get_comment_num blog %}</font></nobr>
                             </div>
                         {% empty %}
                             暂无博客，赶快去写一个吧~
