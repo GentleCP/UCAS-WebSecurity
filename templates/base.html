@@ -67,12 +67,12 @@
                         {% endif %}
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">个人中心</a></li>
-                        {% if user.is_superuser %}
-                            <li><a href="/admin">后台管理</a></li>
-                        {% endif %}
-                        <li role="separator" class="divider"></li>
+
                         {% if user.is_authenticated %}
+                            <li><a href="#">个人中心</a></li>
+                            <li><a href="/admin">后台管理</a></li>
+                            <li role="separator" class="divider"></li>
+
                             <li><a href="{% url 'logout' %}">退出登录</a></li>
                         {% else %}
                             <li><a href="{% url 'login' %}?referer={{ request.path }}">登录</a></li>

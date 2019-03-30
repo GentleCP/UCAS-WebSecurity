@@ -24,11 +24,10 @@ urlpatterns = [
     # 项目根目录url
     path('', views.get_index, name="index"),
     path('admin/', admin.site.urls, name="admin"),
-    path('login/', views.login, name="login"),
-    path('logout/', views.logout, name="logout"),
-    path('register/',views.register, name="register"),
+
 
     # my apps
+    path('user/',include('user.urls')),
     path('blog/', include('blog.urls')),
     path('comment/', include('comment.urls')),
 
