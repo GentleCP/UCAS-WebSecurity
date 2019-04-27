@@ -24,7 +24,7 @@ SECRET_KEY = '1xj%!^d&q^1t=8r+)4nuf$klo7nq9p_+fbk9em5l)0a)7of870'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -89,7 +89,7 @@ DATABASES = {
     'default':{
         'ENGINE':'django.db.backends.mysql',
         'NAME':'mywebsite',
-        'USER':'gentlecp',
+        'USER':'root',
         'PASSWORD':'chao5748',
         'HOST':'127.0.0.1',
         'PORT':'3306',
@@ -129,7 +129,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-
+# STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
