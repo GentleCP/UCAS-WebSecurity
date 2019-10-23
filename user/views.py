@@ -2,13 +2,46 @@ from django.shortcuts import render,redirect
 from django.contrib import auth
 from django.urls import reverse
 from django.contrib.auth.models import User
+from MyWebSite.settings import LIMIT_TIME
 
+from .utils import limit_ip
 from .forms import LoginForm,RegisterForm
 
 # Create your views here.
+def login_limit_ip(request):
+    if request.META.get('HTTP_X_FORWARDED_FOR'):
+        ip = request.META.get("HTTP_X_FORWARDED_FOR")
+    else:
+        ip = request.META.get("REMOTE_ADDR")
+
+    not_limit = True
+    context = {}
+    if limit_ip(request):
+        not_limit = False  # 受限了不再进行post登录
+        context['limit_msg'] = '对不起，您的访问过于频繁，请等待%d秒后再操作！'% LIMIT_TIME
+    if not_limit and request.method == 'POST':
+        # 请求方法是POST类型，说明是登录请求
+        print(request.POST)
+        login_form = LoginForm(request.POST)  # 将request中的参数传入到Form 类中
+        if login_form.is_valid():
+            # 判断数据有效
+            user = login_form.cleaned_data['user']
+            auth.login(request,user)
+            return redirect(request.GET.get('referer'),reverse('index'))
+    else:
+        # 其他的方法，我们就刷新登录页面
+        login_form = LoginForm()
+
+
+    context['form']=login_form
+    return render(request, 'login_limit_ip.html', context)
+
+
+
 def login(request):
     if request.method == 'POST':
         # 请求方法是POST类型，说明是登录请求
+        print(request.POST)
         login_form = LoginForm(request.POST)  # 将request中的参数传入到Form 类中
         if login_form.is_valid():
             # 判断数据有效
