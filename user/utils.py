@@ -1,4 +1,4 @@
-from MyWebSite.settings import LIMIT_TIME
+from MyWebSite.settings import LIMIT_TIME,LIMIT_COUNT
 from .models import HostInfo
 
 import pytz
@@ -24,7 +24,7 @@ def limit_ip(request):
 
         else:
             # 60秒内还没被限制的
-            if ret.count >=2:
+            if ret.count >=LIMIT_COUNT:
                 ret.is_lock = 1
                 ret.count = 0
                 ret.save()

@@ -16,7 +16,7 @@ def login_limit_ip(request):
 
     not_limit = True
     context = {}
-    if limit_ip(request):
+    if request.method =="POST" and limit_ip(request):
         not_limit = False  # 受限了不再进行post登录
         context['limit_msg'] = '对不起，您的访问过于频繁，请等待%d秒后再操作！'% LIMIT_TIME
     if not_limit and request.method == 'POST':
