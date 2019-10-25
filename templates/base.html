@@ -70,14 +70,14 @@
 
                         {% if user.is_authenticated %}
                             <li><a href="#">个人中心</a></li>
-                            <li><a name="backdoor" href="/admin">后台管理</a></li>
+                            <li><a id="backdoor" href="/admin">后台管理</a></li>
                             <li role="separator" class="divider"></li>
 
                             <li><a href="{% url 'logout' %}">退出登录</a></li>
                         {% else %}
-                            <li><a name="login" href="{% url 'login' %}?referer={{ request.path }}">登录</a></li>
-                            <li><a name="login-limit-ip" href="{% url 'login_limit_ip' %}?referer={{ request.path }}">登录(限制ip登录)</a></li>
-                            <li><a name="register" href="{% url 'register' %}?referer={{ request.path }}">注册</a></li>
+                            <li><a id="login" href="{% url 'login' %}?referer={{ request.path }}">登录</a></li>
+                            <li><a id="login-limit-ip" href="{% url 'login_limit_ip' %}?referer={{ request.path }}">登录(限制ip登录)</a></li>
+                            <li><a id="register" href="{% url 'register' %}?referer={{ request.path }}">注册</a></li>
                         {% endif %}
 
                     </ul>
