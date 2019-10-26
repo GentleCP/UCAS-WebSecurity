@@ -6,11 +6,13 @@ from django.contrib.auth.models import User
 from MyWebSite.settings import LIMIT_TIME
 
 from .utils import limit_ip
-from .forms import LoginForm,RegisterForm
+from .forms import LoginForm,RegisterForm,LoginForm_limit_captcha
 from user import models
 import time
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
+
+from user import create_captcha
 
 # Create your views here.
 def login_limit_ip(request):
@@ -46,6 +48,51 @@ def login_limit_ip(request):
 
     context['form']=login_form
     return render(request, 'login_limit_ip.html', context)
+
+title = ''
+
+def login_limit_captcha(request):
+    global title   #定义全局变量保存生成的验证码标签
+    #title = title
+    if request.method == 'POST':
+        # 请求方法是POST类型，说明是登录请求
+        #print('this is a post')
+        print(request.POST)
+        login_form = LoginForm_limit_captcha(request.POST)  # 将request中的参数传入到Form 类中
+        #print(login_form)
+        if login_form.is_valid():
+            #print('is valid')
+            # 判断数据有效
+            user = login_form.cleaned_data['user']
+            captcha = login_form.cleaned_data['captcha']
+            print(title)
+            print(captcha)
+            if title == captcha:
+                #如果验证码认证成功则完成登陆，返回上一个页面
+                auth.login(request,user)
+                print('success')
+                print(request.GET.get('referer'),reverse('index'))
+                #if request.GET.get('referer') != None:
+                return redirect(request.GET.get('referer'),reverse('index')) #返回上一个页面
+            else:
+                #如果验证码认证失败则刷新页面，刷新验证码
+                img,title = create_captcha.create_captcha_set()
+                print('invalid captcha')
+        else: 
+            #如果认证失败则刷新页面面，刷新验证码 
+            img,title = create_captcha.create_captcha_set()
+            print(login_form.errors)
+            
+    else:
+        # 其他的方法，我们就刷新登录页面，刷新验证码
+        img,title = create_captcha.create_captcha_set()
+        login_form = LoginForm_limit_captcha()
+
+    context = {}
+    context['form']=login_form
+    #print('context')
+    #print(context)
+    return render(request, 'login_limit_captcha.html', context)
 
 @csrf_exempt
 def slide_captcha(request):

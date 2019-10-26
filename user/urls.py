@@ -7,6 +7,7 @@ urlpatterns = [
     # localhost:8000/user
     path('login/', views.login, name="login"),
     path('login_limit_ip/',views.login_limit_ip,name="login_limit_ip"),
+    path('login_limit_captcha/', views.login_limit_captcha, name="login_limit_captcha"),
     path('user_center', views.user_center, name="user_center"),
     path('logout/', views.logout, name="logout"),
     path('register/', views.register, name="register"),

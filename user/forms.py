@@ -22,6 +22,28 @@ class LoginForm(forms.Form):
             self.cleaned_data['user'] = user
         return self.cleaned_data
 
+class LoginForm_limit_captcha(forms.Form):
+    username = forms.CharField(label="账号",
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '请输入账号'}))
+    password = forms.CharField(label="密码",
+                               widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '请输入密码'}))
+    captcha = forms.CharField(label="验证码",
+                                widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '请输入验证码'}))
+
+    def clean(self):
+        '''
+        进行账号验证
+        :return:cleaned_data
+        '''
+        username = self.cleaned_data['username']
+        password = self.cleaned_data['password']
+        user = auth.authenticate(username=username, password=password)
+        if user is None:
+            raise forms.ValidationError('用户名或密码不正确，登录失败！')
+        else:
+            self.cleaned_data['user'] = user
+        return self.cleaned_data
+
 class RegisterForm(forms.Form):
     username = forms.CharField(label="账号",min_length=1, max_length=20,
                                widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '请输入1-20位的账号'}))
