@@ -23,8 +23,8 @@ class LoginForm(forms.Form):
         return self.cleaned_data
 
 class RegisterForm(forms.Form):
-    username = forms.CharField(label="账号",min_length=6, max_length=20,
-                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '请输入6-20位的账号'}))
+    username = forms.CharField(label="账号",min_length=1, max_length=20,
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '请输入1-20位的账号'}))
     email = forms.EmailField(label="邮箱",
                                widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': '请输入邮箱'}))
 
@@ -53,9 +53,9 @@ class RegisterForm(forms.Form):
         if password != password_repeat:
             raise forms.ValidationError('两次输入密码不一致')
 
-        elif password.isdigit() or password.isalpha():
-            # 密码全由数字或字母组成，不安全
-            raise forms.ValidationError('密码至少应为数字加字母的组合')
+        # elif password.isdigit() or password.isalpha():
+        #     # 密码全由数字或字母组成，不安全
+        #     raise forms.ValidationError('密码至少应为数字加字母的组合')
 
         else:
             return password_repeat
