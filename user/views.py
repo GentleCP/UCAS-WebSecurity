@@ -1,14 +1,45 @@
-import time
-
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render,redirect
 from django.contrib import auth
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.views.decorators.csrf import csrf_exempt
 
-from user import models
+from MyWebSite.settings import LIMIT_TIME
+
+from .utils import limit_ip
 from .forms import LoginForm,RegisterForm
+from user import models
+import time
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, JsonResponse
+
+# Create your views here.
+def login_limit_ip(request):
+    if request.META.get('HTTP_X_FORWARDED_FOR'):
+        ip = request.META.get("HTTP_X_FORWARDED_FOR")
+    else:
+        ip = request.META.get("REMOTE_ADDR")
+
+    not_limit = True
+    context = {}
+    if request.method =="POST" and limit_ip(request):
+        not_limit = False  # 受限了不再进行post登录
+        context['limit_msg'] = '对不起，您的访问过于频繁，请等待%d秒后再操作！'% LIMIT_TIME
+    if not_limit and request.method == 'POST':
+        # 请求方法是POST类型，说明是登录请求
+        print(request.POST)
+        login_form = LoginForm(request.POST)  # 将request中的参数传入到Form 类中
+        if login_form.is_valid():
+            # 判断数据有效
+            user = login_form.cleaned_data['user']
+            auth.login(request,user)
+            return redirect(request.GET.get('referer'),reverse('index'))
+    else:
+        # 其他的方法，我们就刷新登录页面
+        login_form = LoginForm()
+
+
+    context['form']=login_form
+    return render(request, 'login_limit_ip.html', context)
 
 @csrf_exempt
 def slide_captcha(request):
@@ -26,8 +57,6 @@ def slide_captcha(request):
             dict = {'key': t,'username':username}
             return JsonResponse(dict)
 
-
-# Create your views here.
 @csrf_exempt
 def login_slide_captcha(request):
     if request.method == 'POST':
@@ -60,6 +89,7 @@ def login_slide_captcha(request):
 def login(request):
     if request.method == 'POST':
         # 请求方法是POST类型，说明是登录请求
+        print(request.POST)
         login_form = LoginForm(request.POST)  # 将request中的参数传入到Form 类中
         if login_form.is_valid():
             # 判断数据有效
