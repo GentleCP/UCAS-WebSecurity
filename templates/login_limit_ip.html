@@ -28,7 +28,7 @@
                             {#                        显示错误信息#}
                             <span class="text-danger"
                                   >{{ login_form.non_field_errors.as_text }}</span>
-                            <span class="text-danger"
+                            <span id="limit-msg" class="text-danger"
                                   >{{ limit_msg }}</span>
                             <input type="submit" value="{% block btn-title %}登录{% endblock %}" class="btn btn-info btn-block" >
                         </form>

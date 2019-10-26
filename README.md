@@ -1,31 +1,47 @@
-# 我的个人网站
-## 一、功能列表
-- 博客文章展示
-- 用户注册登录
-- 用户评论
+# UCAS-Web安全技术大作业[在线服务破解]
+## 一、服务描述
+依据大作业要求，我们搭建了一个简单的博客网站服务，用户可以在不登录的情况下浏览博客内容，但必须登录后才能撰写评论，我们要实现对该网站的自
+动化爆破，针对自动化爆破，我们设置了多种限制，同时给出了绕过方法。主要包含如下：
 
-## 二、系统架构
-MyWebSite  
-|--blog  # 博客app  
-|--comment  # 评论app  
-|--history  # 历史信息app（暂未上线）  
-|--media  # 媒体文件（上传/图片）  
-&emsp;|--picture  
-&emsp;|--upload  
-|--MyWebSite  # 主目录  
-|--read_static  # 阅读统计  
-|--static  # 静态文件  
-|--templates  # 模板页面  
-|--user  # 用户app（暂未上线）  
-data.json  # 数据库数据文件  
-manage.py # 管理文件  
-README.md  # 项目说明文档  
-requirements.txt  # 依赖包索引文件  
-timezone_posix.sql  # 时区数据库文件  
+登录方式|登录限制| 绕过方法
+:---:| :---: | :---:
+简易登录|无 | 无
+限制ip登录|限制指定ip频繁访问|ip代理池
+限制用户名登录|限制指定用户名的频繁访问|更换用户名爆破
+带图片验证码的登录|图片验证码| 神经网络训练手写字体识别
+带滑动验证码的登录|滑动验证码| 利用滑动验证码逻辑漏洞
 
-## 三、部署说明
-- 1、在github上克隆项目到本地
-- 2、创建新的虚拟环境，安装requirements中的依赖包
-- 3、创建mysql数据库，数据库名mywebsite（确保数据库用户与settings中一致）
-- 4、migrate命令创建数据库表结构，用loaddata命令将data.json数据导入数据库
-- 5、在mysql环境中用source命令将timezone_posix.sql导入，添加时区信息。
+## 二、网站服务部署
+1. **获取项目**  
+在服务器上执行以下命令克隆项目：
+    ```text
+    git clone https://github.com/GentleCP/Insecurity.git
+    ```
+2. **安装依赖包**  
+    在项目根目录下执行如下命令：
+    ```text
+    pip3 install -r requirements.txt
+    ```
+3. **启动项目**  
+    在服务器上执行如下命令启动项目：
+    ```text
+    python3 manage.py runserver 0.0.0.0:40000  # 端口自拟
+    ``` 
+    或用如下命令在后台运行
+    ```text
+    nohup python3 manage.py runserver 0.0.0.0:40000 &  
+    ```
+    或采用uwsgi+nginx部署，由于时间原因，这里不予给出。
+   
+4. **客户端访问项目**  
+    在浏览器中输入如下地址访问项目：
+    ```text
+    http://域名(服务器ip):40000  
+    ```
+    
+## 三、自动化爆破脚本使用说明
+> to be continue
+
+## 四、联系
+如有任何疑问，请联系：
+- email: 574881148@qq.com
