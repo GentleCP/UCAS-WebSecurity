@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{# 页面标题 head#}
+{% block title %}我的网站|登录{% endblock %}
+{% block head_extends %}
+    {#    外部文件引用#}
+   
+{% endblock %}
+{# 页面内容 body #}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-4">
+                <div class="panel panel-info" style="margin-top: 15em">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            {% block op-title %}登录{% endblock %}
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        {#                        django form 表单#}
+                        <form class="form-signin" action="" method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <label for="field.id_for_label">{{ field.label }}</label>
+                                {{ field }}
+                                {#                                输入应为text类型，其他类型报错#}
+                                <p class="text-danger">{{ field.errors.as_text }}</p>
+                            {% endfor %}
+                            {#                        显示错误信息#}
+                            <span id="err_msg" class="text-danger"
+                                  >{{ login_form.non_field_errors.as_text }}</span>
+                            <div id="captcha"></div>
+                            <div id="msg"></div>
+                            <br>
+                            <input id="loginbutton" onclick="captcha()"  value="{% block btn-title %}登录{% endblock %}" class="btn btn-info btn-block" >
+                        </form>
+                        <script>
+                            if (!window.jigsaw) {
+                                document.write('<script src="/static/js/jigsaw.min.js"><\/script>')
+                            }
+                        </script>
+                        <script>
+                            var key
+                            function captcha(){
+                                if($('#id_username').val() == '' | $('#id_password').val() == ''){
+                                    alert('账号密码不能为空')
+                                }else {
+                                   $("#loginbutton").attr("type","hidden")
+                                jigsaw.init({
+                                el: document.getElementById('captcha'),
+                                onSuccess: function() {
+                                    var t= {'un':$('#id_username').val(),'result':'true'}
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "slide_captcha/",    //后台处理函数的url
+                                        data: t,
+                                        success:
+                                            function (result) {  //获取后台处理后传过来的result
+                                                key = result['key']
+                                                loginppp(key)
+                                            },
+                                    });
+                                },
+                                onFail: cleanMsg,
+                                onRefresh: cleanMsg
+                            })
+                                }
+
+                            }
+
+                            function cleanMsg() {
+                                document.getElementById('msg').innerHTML = ''
+                            }
+
+                            function loginppp(key) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "",    //后台处理函数的url
+                                    data: {'username':$('#id_username').val(),'password':$('#id_password').val(),'key':key},
+                                    success:
+                                        function (result) {  //获取后台处理后传过来的result
+                                        if(result =="success"){
+                                            window.location.href = '/'
+                                        }else {
+                                            alert("用户名或密码错误")
+                                            window.location.href = '/user/login_slide_captcha'
+                                        }
+                                        },
+                                    });
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- /container -->
+
+{% endblock %}

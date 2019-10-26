@@ -2,10 +2,15 @@ from django.shortcuts import render,redirect
 from django.contrib import auth
 from django.urls import reverse
 from django.contrib.auth.models import User
+
 from MyWebSite.settings import LIMIT_TIME
 
 from .utils import limit_ip
 from .forms import LoginForm,RegisterForm
+from user import models
+import time
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, JsonResponse
 
 # Create your views here.
 def login_limit_ip(request):
@@ -28,6 +33,12 @@ def login_limit_ip(request):
             user = login_form.cleaned_data['user']
             auth.login(request,user)
             return redirect(request.GET.get('referer'),reverse('index'))
+
+        else:
+            context = {}
+            context['form'] = LoginForm()
+            context['err_msg'] = "用户名或密码错误！"
+            return render(request,'login.html',context)
     else:
         # 其他的方法，我们就刷新登录页面
         login_form = LoginForm()
@@ -36,7 +47,50 @@ def login_limit_ip(request):
     context['form']=login_form
     return render(request, 'login_limit_ip.html', context)
 
+@csrf_exempt
+def slide_captcha(request):
+    if request.method == "POST":
+            username = request.POST.get('un')
+            res = request.POST.get('result')
+            t = str(time.time())
+            print(username)
+            print(res)
+            if res == 'true':
+                models.LoginCaptcha.objects.create(username=username, key= t)
+                # captcha.append({username:time.time()})
+                # print(captcha)
 
+            dict = {'key': t,'username':username}
+            return JsonResponse(dict)
+
+@csrf_exempt
+def login_slide_captcha(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        if models.LoginCaptcha.objects.filter(username=username).count() != 1 :
+            return HttpResponse('fail')
+        else:
+            user = models.LoginCaptcha.objects.get(username=username)
+            print(user)
+            if user:
+                if (user.key == request.POST.get('key')):
+                    models.LoginCaptcha.objects.get(username=request.POST.get('username')).delete()
+                    # 请求方法是POST类型，说明是登录请求
+                    login_form = LoginForm(request.POST)  # 将request中的参数传入到Form 类中
+                    print(request.POST)
+                    if login_form.is_valid():
+                        # 判断数据有效
+                        user = login_form.cleaned_data['user']
+                        auth.login(request, user)
+                        return HttpResponse('success')
+                        # return redirect(request.GET.get('referer'),reverse('index'))
+    else:
+        # 其他的方法，我们就刷新登录页面
+        login_form = LoginForm()
+
+    context = {}
+    context['form']=login_form
+    return render(request, 'login_slide.html', context)
 
 def login(request):
     if request.method == 'POST':
@@ -48,6 +102,12 @@ def login(request):
             user = login_form.cleaned_data['user']
             auth.login(request,user)
             return redirect(request.GET.get('referer'),reverse('index'))
+
+        else:
+            context = {}
+            context['form'] = LoginForm()
+            context['err_msg'] = "用户名或密码错误！"
+            return render(request,'login.html',context)
     else:
         # 其他的方法，我们就刷新登录页面
         login_form = LoginForm()
