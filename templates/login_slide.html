@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{# 页面标题 head#}
+{% block title %}我的网站|登录{% endblock %}
+{% block head_extends %}
+    {#    外部文件引用#}
+    <style>
+    #msg {
+      width: 100%;
+      line-height: 40px;
+      font-size: 14px;
+      text-align: center;
+    }
+    a:link,a:visited,a:hover,a:active {
+      margin-left: 100px;
+      color: #0366D6;
+    }
+  </style>
+{% endblock %}
+{# 页面内容 body #}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-4">
+                <div class="panel panel-info" style="margin-top: 15em">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            {% block op-title %}登录{% endblock %}
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        {#                        django form 表单#}
+                        <form class="form-signin" action="" method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <label for="field.id_for_label">{{ field.label }}</label>
+                                {{ field }}
+                                {#                                输入应为text类型，其他类型报错#}
+                                <p class="text-danger">{{ field.errors.as_text }}</p>
+                            {% endfor %}
+                            {#                        显示错误信息#}
+                            <span class="text-danger"
+                                  >{{ login_form.non_field_errors.as_text }}</span>
+{#                            <input type="hidden" name="key" class="form-control" placeholder="key" id="key">#}
+                            <div id="captcha"></div>
+                            <div id="msg"></div>
+                            <br>
+{#                            <input type="submit" onclick="captcha()"  value="{% block btn-title %}登录{% endblock %}" class="btn btn-info btn-block" >#}
+                            <input onclick="captcha()"  value="{% block btn-title %}登录{% endblock %}" class="btn btn-info btn-block" >
+                        </form>
+                        <script>
+                            if (!window.jigsaw) {
+                                document.write('<script src="/static/js/jigsaw.min.js"><\/script>')
+                            }
+                        </script>
+                        <script>
+                            var key
+                            function captcha(){
+                                jigsaw.init({
+                                el: document.getElementById('captcha'),
+                                onSuccess: function() {
+                                    var t= {'un':$('#id_username').val(),'result':'true'}
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "slide_captcha/",    //后台处理函数的url
+                                        data: t,
+                                        success:
+                                            function (result) {  //获取后台处理后传过来的result
+                                                {#alert(result)#}
+                                                {#document.getElementById('msg').innerHTML = result['result']#}
+                                                key = result['key']
+                                                loginppp(key)
+                                                {#$('#key').val(key)#}
+                                            },
+                                    });
+                                    {#$("#loginbutton").attr("disabled",false)#}
+                                },
+                                onFail: cleanMsg,
+                                onRefresh: cleanMsg
+                            })
+                            }
+
+                            function cleanMsg() {
+                                document.getElementById('msg').innerHTML = ''
+                            }
+
+                            function loginppp(key) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "",    //后台处理函数的url
+                                    data: {'username':$('#id_username').val(),'password':$('#id_password').val(),'key':key},
+                                    success:
+                                        function (result) {  //获取后台处理后传过来的result
+                                        if(result =="success"){
+                                            window.location.href = '/'
+                                        }else {
+                                            alert("登录失败")
+                                        }
+                                        },
+                                    });
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- /container -->
+
+{% endblock %}
