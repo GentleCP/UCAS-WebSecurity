@@ -177,5 +177,5 @@ BLOGS_PER_PAGE = 5  # 每页放置的blog数量
 NUM_OF_HOT_BLOGS = 5 # 热门文章显示最大数量
 
 # settings in ip limit
-LIMIT_TIME = 5
+LIMIT_TIME = 60
 LIMIT_COUNT = 5

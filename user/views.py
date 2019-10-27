@@ -37,10 +37,7 @@ def login_limit_ip(request):
             return redirect(request.GET.get('referer'),reverse('index'))
 
         else:
-            context = {}
-            context['form'] = LoginForm()
             context['err_msg'] = "用户名或密码错误！"
-            return render(request,'login.html',context)
     else:
         # 其他的方法，我们就刷新登录页面
         login_form = LoginForm()
@@ -53,45 +50,39 @@ title = ''
 
 def login_limit_captcha(request):
     global title   #定义全局变量保存生成的验证码标签
+    context = {}
     #title = title
     if request.method == 'POST':
         # 请求方法是POST类型，说明是登录请求
-        #print('this is a post')
         print(request.POST)
         login_form = LoginForm_limit_captcha(request.POST)  # 将request中的参数传入到Form 类中
-        #print(login_form)
         if login_form.is_valid():
             #print('is valid')
             # 判断数据有效
             user = login_form.cleaned_data['user']
             captcha = login_form.cleaned_data['captcha']
-            print(title)
-            print(captcha)
             if title == captcha:
                 #如果验证码认证成功则完成登陆，返回上一个页面
                 auth.login(request,user)
-                print('success')
                 print(request.GET.get('referer'),reverse('index'))
                 #if request.GET.get('referer') != None:
                 return redirect(request.GET.get('referer'),reverse('index')) #返回上一个页面
             else:
                 #如果验证码认证失败则刷新页面，刷新验证码
                 img,title = create_captcha.create_captcha_set()
-                print('invalid captcha')
+                context['err_msg'] = '验证码错误，请重新输入'
+
         else: 
             #如果认证失败则刷新页面面，刷新验证码 
             img,title = create_captcha.create_captcha_set()
-            print(login_form.errors)
-            
+            context['err_msg'] = '用户名或密码错误！'
+
     else:
         # 其他的方法，我们就刷新登录页面，刷新验证码
         img,title = create_captcha.create_captcha_set()
         login_form = LoginForm_limit_captcha()
 
-    context = {}
     context['form']=login_form
-    #print('context')
-    #print(context)
     return render(request, 'login_limit_captcha.html', context)
 
 @csrf_exempt
@@ -100,8 +91,6 @@ def slide_captcha(request):
             username = request.POST.get('un')
             res = request.POST.get('result')
             t = str(time.time())
-            print(username)
-            print(res)
             if res == 'true':
                 models.LoginCaptcha.objects.create(username=username, key= t)
                 # captcha.append({username:time.time()})
@@ -140,6 +129,7 @@ def login_slide_captcha(request):
     return render(request, 'login_slide.html', context)
 
 def login(request):
+    context = {}
     if request.method == 'POST':
         # 请求方法是POST类型，说明是登录请求
         print(request.POST)
@@ -151,15 +141,11 @@ def login(request):
             return redirect(request.GET.get('referer'),reverse('index'))
 
         else:
-            context = {}
-            context['form'] = LoginForm()
             context['err_msg'] = "用户名或密码错误！"
-            return render(request,'login.html',context)
     else:
         # 其他的方法，我们就刷新登录页面
         login_form = LoginForm()
 
-    context = {}
     context['form']=login_form
     return render(request, 'login.html', context)
 

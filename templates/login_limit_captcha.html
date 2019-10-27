@@ -32,6 +32,8 @@
                             {#                        显示错误信息#}
                             <span class="text-danger"
                                   >{{ login_form.non_field_errors.as_text }}</span>
+                            <span class="text-danger"
+                                  >{{ err_msg }}</span>
                             <p>
                             <label for="valid_code">验证码</label>
                             
