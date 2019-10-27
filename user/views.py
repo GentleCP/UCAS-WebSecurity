@@ -168,8 +168,11 @@ def login_block_account(request):
                 user = login_form.cleaned_data['user']
                 auth.login(request, user)
                 return redirect(request.GET.get('referer'), reverse('index'))
+
+            else:
+                context['limit_msg'] = '用户名或密码错误！'
         elif account_state == 0:  # 被封禁
-            context['limit_msg'] = '您的试错次数已达上限！'
+            context['limit_msg'] = '您输错次数太多，请等待60s后再试！'
         elif account_state == -1:
             context['limit_msg'] = '用户名或密码错误！'
     else:
