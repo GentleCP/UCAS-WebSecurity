@@ -76,8 +76,6 @@ def check_account_state(request):
         block_state = False
         login_err_obj = LoginError(user=user_obj, first_err_time=curr_time, err_login_times=err_login_times, block_state=block_state)
         login_err_obj.save()
-    elif auth_res:
-        return state
     elif login_err:  # login_err表中存在该账户的记录
         first_err_time = login_err.first_err_time
         err_login_times = login_err.err_login_times
@@ -105,6 +103,8 @@ def check_account_state(request):
             else:  # 用户名和密码正确
                 login_err = set_login_err(login_err, default_first_err_time, 0, False)
                 login_err.save()
+    elif auth_res:
+        return state
 
     return state
 
