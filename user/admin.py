@@ -11,3 +11,5 @@ class HostInfoAdmin(admin.ModelAdmin):
 @admin.register(LoginError)
 class LoginErrorAdmin(admin.ModelAdmin):
     list_display = ('user','first_err_time', 'err_login_times', 'block_state')
+
+

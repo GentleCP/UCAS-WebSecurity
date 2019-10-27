@@ -20,7 +20,7 @@
                     <div class="panel-body">
                         {#                        django form 表单#}
                         <form class="form-signin" action="" method="post">
-                            {% csrf_token %}
+{#                            {% csrf_token %}#}
                             {% for field in form %}
                                 <label for="field.id_for_label">{{ field.label }}</label>
                                 {{ field }}
