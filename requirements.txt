@@ -1,6 +1,6 @@
 captcha==0.3
 cycler==0.10.0
-Django==2.1.7
+Django==2.1.11
 django-ckeditor==5.6.1
 django-js-asset==1.2.2
 django-mdeditor==0.1.13
