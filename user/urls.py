@@ -13,5 +13,6 @@ urlpatterns = [
     path('register/', views.register, name="register"),
     path('login_slide_captcha/slide_captcha/', views.slide_captcha, name="slide_captcha"),
     path('login_slide_captcha/', views.login_slide_captcha, name="login_slide_captcha"),
+    path('login-block-account/', views.login_block_account, name="login_block_account"),
 
 ]

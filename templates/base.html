@@ -79,6 +79,7 @@
                             <li><a id="login-limit-ip" href="{% url 'login_limit_ip' %}?referer={{ request.path }}">登录(限制ip登录)</a></li>
                             <li><a id="login-limit-captcha" href="{% url 'login_limit_captcha' %}?referer={{ request.path }}">登录(验证码限制登录)</a></li>
                             <li><a href="{% url 'login_slide_captcha' %}?referer={{ request.path }}">登录(滑动)</a></li>
+                            <li><a href="{% url 'login_block_account' %}?referer={{ request.path }}">登录（屏蔽账户）</a></li>
                             <li><a id="register" href="{% url 'register' %}?referer={{ request.path }}">注册</a></li>
                         {% endif %}
 

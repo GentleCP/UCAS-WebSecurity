@@ -14,6 +14,8 @@ from django.http import HttpResponse, JsonResponse
 
 from user import create_captcha
 
+from user.utils import check_account_state
+
 # Create your views here.
 def login_limit_ip(request):
     if request.META.get('HTTP_X_FORWARDED_FOR'):
@@ -149,6 +151,34 @@ def login(request):
     context['form']=login_form
     return render(request, 'login.html', context)
 
+
+def login_block_account(request):
+    """
+    限制10min内登陆失败次数超过3次的账户
+    :param request:
+    :return:
+    """
+    context = dict()
+
+    if request.method == 'POST':
+        login_form = LoginForm(request.POST)
+        account_state = check_account_state(request)  # 当前账户的状态
+        if account_state == 1:
+            if login_form.is_valid():
+                user = login_form.cleaned_data['user']
+                auth.login(request, user)
+                return redirect(request.GET.get('referer'), reverse('index'))
+        elif account_state == 0:  # 被封禁
+            context['limit_msg'] = '您的试错次数已达上限！'
+        elif account_state == -1:
+            context['limit_msg'] = '用户名或密码错误！'
+    else:
+        login_form = LoginForm()
+
+    context['form'] = login_form
+    return render(request, 'login_block_account.html', context)
+
+
 def logout(request):
     # 退出登录
     auth.logout(request)
@@ -183,3 +213,5 @@ def register(request):
 def user_center(request):
     context = {}
     return render(request, 'user_center.html', context)
+
+
