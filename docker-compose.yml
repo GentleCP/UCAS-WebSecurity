@@ -10,7 +10,7 @@ services:
     volumes:
       - ./:/usr/src/app
     ports:
-      - "8086:8000"
+      - "40000:8000"
     hostname: insecurity
     container_name: insecurity
 
