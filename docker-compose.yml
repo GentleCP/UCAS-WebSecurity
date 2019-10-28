@@ -14,10 +14,10 @@ services:
     hostname: insecurity
     container_name: insecurity
 
-    command: ["/usr/local/bin/gunicorn", "MyWebSite.wsgi:application", "-w", "2", "-b", ":8000"]
-    environment:
-      DEBUG: "false"
-    #command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    #command: ["/usr/local/bin/gunicorn", "MyWebSite.wsgi:application", "-w", "2", "-b", ":8000"]
+    #environment:
+      #DEBUG: "false"
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
     logging:
       driver: "json-file"
