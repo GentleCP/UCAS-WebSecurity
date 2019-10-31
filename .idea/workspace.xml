@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0d7cf5a4-8d5a-4fed-a111-57c8dd4ecaf2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyWebSite/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/MyWebSite/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -92,8 +90,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="537">
-                <caret line="151" column="4" selection-start-line="151" selection-start-column="4" selection-end-line="151" selection-end-column="4" />
+              <first_editor relative-caret-position="2404">
+                <caret line="159" column="20" selection-start-line="159" selection-start-column="20" selection-end-line="159" selection-end-column="20" />
               </first_editor>
               <second_editor />
             </state>
@@ -174,6 +172,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -185,7 +184,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -196,7 +194,7 @@
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.externalTools" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -288,17 +286,18 @@
       <workItem from="1572154071440" duration="1230000" />
       <workItem from="1572157523997" duration="2068000" />
       <workItem from="1572188381537" duration="3333000" />
-      <workItem from="1572233946627" duration="2987000" />
+      <workItem from="1572233946627" duration="3441000" />
+      <workItem from="1572501128681" duration="193000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7532000" />
+    <option name="totallyTimeSpent" value="8179000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19241774" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19527897" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -312,7 +311,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5010661" side_tool="true" weight="0.30944625" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.4989339" visible="true" weight="0.24819277" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.4989339" visible="true" weight="0.24819277" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.32891566" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -419,16 +418,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Library/Containers/com.tencent.qq/Data/Library/Application Support/QQ/Users/574881148/QQ/Temp.db/qz.db/lsj_zip0/lsj/captcha.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="92" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/Library/Containers/com.tencent.qq/Data/Library/Application Support/QQ/Users/574881148/QQ/Temp.db/qz.db/lsj_zip0/lsj/captcha.py" />
     <entry file="file://$USER_HOME$/.virtualenvs/MyWebSite_env/lib/python3.7/site-packages/django/core/management/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="443">
@@ -446,6 +436,8 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/Library/Containers/com.tencent.qq/Data/Library/Application Support/QQ/Users/574881148/QQ/Temp.db/qz.db/lsj_zip0/lsj/verify.py" />
+    <entry file="file://$USER_HOME$/Library/Containers/com.tencent.qq/Data/Library/Application Support/QQ/Users/574881148/QQ/Temp.db/qz.db/lsj_zip0/lsj/captcha_recog.py" />
     <entry file="file://$PROJECT_DIR$/templates/login_limit_ip.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="544">
@@ -457,20 +449,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1207">
           <caret line="71" column="57" selection-start-line="71" selection-start-column="57" selection-end-line="71" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Containers/com.tencent.qq/Data/Library/Application Support/QQ/Users/574881148/QQ/Temp.db/qz.db/lsj_zip0/lsj/verify.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="13" column="13" selection-end-line="90" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Containers/com.tencent.qq/Data/Library/Application Support/QQ/Users/574881148/QQ/Temp.db/qz.db/lsj_zip0/lsj/captcha_recog.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="9" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -498,9 +476,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/login_block_account.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/MyWebSite/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
@@ -508,11 +483,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/login_block_account.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="537">
-            <caret line="151" column="4" selection-start-line="151" selection-start-column="4" selection-end-line="151" selection-end-column="4" />
+          <first_editor relative-caret-position="2404">
+            <caret line="159" column="20" selection-start-line="159" selection-start-column="20" selection-end-line="159" selection-end-column="20" />
           </first_editor>
           <second_editor />
         </state>
