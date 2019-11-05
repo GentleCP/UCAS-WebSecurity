@@ -1,0 +1,27 @@
+version: "3.4"
+services:
+
+
+  insecurity:
+    build:
+      context: .
+      dockerfile: Dockerfile-web
+    restart: always
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - "40000:8000"
+    hostname: insecurity
+    container_name: insecurity
+
+    #command: ["/usr/local/bin/gunicorn", "MyWebSite.wsgi:application", "-w", "2", "-b", ":8000"]
+    #environment:
+      #DEBUG: "false"
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "100"
+
